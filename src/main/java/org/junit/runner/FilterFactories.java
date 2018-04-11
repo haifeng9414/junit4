@@ -7,6 +7,10 @@ import org.junit.runner.manipulation.Filter;
 /**
  * Utility class whose methods create a {@link FilterFactory}.
  */
+/*
+createFilterFromFilterSpec方法中的参数filterSpec如：org.junit.experimental.categories.IncludeCategories=testutils.SlowTests
+FilterFactories类根据FilterSpec指定的FilterFactory（等号前面的部分）和param（等号后面的部分）生成Filter
+ */
 class FilterFactories {
     /**
      * Creates a {@link Filter}.

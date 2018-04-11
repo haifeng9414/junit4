@@ -5,6 +5,10 @@ import static java.lang.Thread.currentThread;
 /**
  * Miscellaneous functions dealing with classes.
  */
+/*
+根据className获取class，默认使用currentThread().getContextClassLoader()加载类，如果currentThread().getContextClassLoader()
+如果currentThread().getContextClassLoader()为null则使用该类的class loader
+ */
 public class Classes {
 
     /**

@@ -49,6 +49,10 @@ import org.junit.runner.Result;
  * @see org.junit.runner.JUnitCore
  * @since 4.0
  */
+/*
+定义test在运行时的不同时间段执行的方法，如Result的Listener内部类通过该接口获取了整个test的运行情况，如运行的方法数量和失败的方法数量
+Result类根据这些信息来表示运行的结果
+ */
 public class RunListener {
 
     /**

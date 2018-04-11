@@ -207,7 +207,9 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
      * @return {@code Statement}
      */
     protected Statement classBlock(final RunNotifier notifier) {
+        //Statement代表了junit运行过程中需要执行的一个动作，如运行一个测试方法。
         Statement statement = childrenInvoker(notifier);
+        //判断当前类的所有方法是否都被忽略了，如果不是
         if (!areAllChildrenIgnored()) {
             statement = withBeforeClasses(statement);
             statement = withAfterClasses(statement);
@@ -385,6 +387,8 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
 
     @Override
     public void run(final RunNotifier notifier) {
+        //EachTestNotifier包含的notifier和运行测试过程中应该触发通知的方法，实际上是对notifier的委托，即委托模式
+        //当然这里直接调用notifier.fireTestSuiteStarted(description)也是可以的。
         EachTestNotifier testNotifier = new EachTestNotifier(notifier,
                 getDescription());
         testNotifier.fireTestSuiteStarted();

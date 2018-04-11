@@ -24,6 +24,9 @@ import org.junit.runners.model.InitializationError;
  *
  * @since 4.0
  */
+/*
+Request类是对需要测试的类的一个描述，为测试的类添加描述的目的是能够进行filter和sort
+ */
 public abstract class Request {
     /**
      * Create a <code>Request</code> that, when processed, will run a single test.

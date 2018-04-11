@@ -46,10 +46,12 @@ class JUnitCommandLineParseResult {
         return result;
     }
 
+    //解析命令行参数，提取参数中的filter和class并保存下来
     private void parseArgs(String[] args) {
         parseParameters(parseOptions(args));
     }
 
+    //提取filterSpec，返回参数中的class数组
     String[] parseOptions(String... args) {
         for (int i = 0; i != args.length; ++i) {
             String arg = args[i];
@@ -57,6 +59,7 @@ class JUnitCommandLineParseResult {
             if (arg.equals("--")) {
                 return copyArray(args, i + 1, args.length);
             } else if (arg.startsWith("--")) {
+                //提取参数中的--filter=xxx或--filter xxx的xxx到filterSpec
                 if (arg.startsWith("--filter=") || arg.equals("--filter")) {
                     String filterSpec;
                     if (arg.equals("--filter")) {
@@ -115,12 +118,16 @@ class JUnitCommandLineParseResult {
         if (parserErrors.isEmpty()) {
             Request request = Request.classes(
                     computer, classes.toArray(new Class<?>[classes.size()]));
+            //暂时不考虑存在filter的情况，没有filter时这里相当于直接返回request
             return applyFilterSpecs(request);
         } else {
             return errorReport(new InitializationError(parserErrors));
         }
     }
 
+    //如果存在filter则返回包含当前的request和指定的filter的FilterRequest实例，filterWith方法每次调用都返回一个新的FilterRequest
+    //所以相当于即使指定了多个filter，也只有最后一个会生效，这一规则只对使用JUnitCommandLineParseResult生成的Request有效，是否有其他地方
+    //存在生成Request的方法还不确定
     private Request applyFilterSpecs(Request request) {
         try {
             for (String filterSpec : filterSpecs) {

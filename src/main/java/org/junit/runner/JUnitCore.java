@@ -71,6 +71,7 @@ public class JUnitCore {
 
         JUnitCommandLineParseResult jUnitCommandLineParseResult = JUnitCommandLineParseResult.parse(args);
 
+        //添加一个TextListener用于打印运行测试时的信息
         RunListener listener = new TextListener(system);
         addListener(listener);
 

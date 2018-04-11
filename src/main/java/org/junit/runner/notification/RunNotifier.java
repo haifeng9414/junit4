@@ -18,6 +18,7 @@ import org.junit.runner.Result;
  *
  * @since 4.0
  */
+//RunNotifier维护了所有的监听器，类似观察者模式
 public class RunNotifier {
     private final List<RunListener> listeners = new CopyOnWriteArrayList<RunListener>();
     private volatile boolean pleaseStop = false;

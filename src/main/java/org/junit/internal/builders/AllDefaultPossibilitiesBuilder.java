@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.runner.Runner;
 import org.junit.runners.model.RunnerBuilder;
 
+//该类实现了RunnerBuilder接口并在使用时将操作委托给其他所有可能的RunnerBuilder
 public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
     private final boolean canUseSuiteMethod;
 
