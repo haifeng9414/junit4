@@ -94,7 +94,7 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
     *
     * @since 4.13
     */
-    protected ParentRunner(TestClass testClass) throws InitializationError {
+protected ParentRunner(TestClass testClass) throws InitializationError {
        this.testClass = notNull(testClass);
        validate();
     }
@@ -213,6 +213,8 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
         if (!areAllChildrenIgnored()) {
             statement = withBeforeClasses(statement);
             statement = withAfterClasses(statement);
+            //使用ClassRule注解的field或method分别指定会返回一个TestRule接口的实现类，该接口调用apply方法返回一个Statement
+            //方法的子类，子类定义了Statement的运行方式，这样就可以指定在运行测试之前做一下其他任务，如ExternalResourceRuleTest的用法
             statement = withClassRules(statement);
         }
         return statement;
@@ -263,8 +265,11 @@ public abstract class ParentRunner<T> extends Runner implements Filterable,
      *         found, or the base statement
      */
     private Statement withClassRules(Statement statement) {
+        //获取所有使用ClassRule注解指定的field或method，并获取field的值和method调用后的返回值，组合在一起返回List<TestRule>
+        //用于生成最终的Statement
         List<TestRule> classRules = classRules();
         return classRules.isEmpty() ? statement :
+                //RunRules类调用所有传入的TestRule，在当前statement的基础上创建新的statement用于最后的测试
                 new RunRules(statement, classRules, getDescription());
     }
 

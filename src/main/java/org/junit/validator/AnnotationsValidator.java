@@ -18,6 +18,10 @@ import org.junit.runners.model.TestClass;
  * 
  * @since 4.12
  */
+/*
+该Validator中使用内部类定义了一个AnnotatableValidator用于验证，因为理论上只需要Class、Method、Field
+这3中验证器，所以使用内部类更方便，减少了源码文件数量
+ */
 public final class AnnotationsValidator implements TestClassValidator {
     private static final List<AnnotatableValidator<?>> VALIDATORS = Arrays.<AnnotatableValidator<?>>asList(
             new ClassValidator(), new MethodValidator(), new FieldValidator());
@@ -40,6 +44,13 @@ public final class AnnotationsValidator implements TestClassValidator {
         return validationErrors;
     }
 
+    //模版方法模式，validateTestClass方法定义了验证TestClass的过程，子类实现过程中的步骤
+    //需要实现的两个方法一个是根据TestClass获取待验证的Annotatable，一个是使用指定的AnnotationValidator
+    //进行验证，AnnotationValidator抽象类中定义了3个方法，分别对Class、Field、Method进行验证，AnnotatableValidator的实现类
+    //根据自己的责任调用对应的方法如ClassValidator调用validateAnnotatedClass方法，而查看validateAnnotatable可知ClassValidator
+    //使用的AnnotationValidator是用ValidateWith注解指定的某个具体的AnnotationValidator，在validateAnnotatable方法中获取这个
+    //注解对应的AnnotationValidator实例并传给相应的AnnotatableValidator实现类进行验证（如果不存在ValidateWith注解则跳过验证）
+    //AnnotationValidatorFactory是用于保存已实例化过的ValidateWith
     private static abstract class AnnotatableValidator<T extends Annotatable> {
         private static final AnnotationValidatorFactory ANNOTATION_VALIDATOR_FACTORY = new AnnotationValidatorFactory();
 

@@ -89,6 +89,7 @@ public abstract class Filter {
      * @param child the runner to be filtered by the receiver
      * @throws NoTestsRemainException if the receiver removes all tests
      */
+    //这种调用方式看着挺舒服
     public void apply(Object child) throws NoTestsRemainException {
         if (!(child instanceof Filterable)) {
             return;

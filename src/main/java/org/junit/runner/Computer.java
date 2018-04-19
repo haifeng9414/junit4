@@ -11,6 +11,10 @@ import org.junit.runners.model.RunnerBuilder;
  *
  * @since 4.6
  */
+/*
+用于从指定的RunnerBuilder和classes中创建在junit4中使用的Runner，而没有其他的功能，所以也没必要实现的很复杂
+不用静态方法声明getSuite是为了子类可以重写getRunner方法
+ */
 public class Computer {
     /**
      * Returns a new default computer, which runs tests in serial order

@@ -28,6 +28,7 @@ import org.junit.internal.MethodSorter;
  *
  * @since 4.5
  */
+//对测试类的封装，并将测试类中的method和field放到以注解为key的map中以便查询
 public class TestClass implements Annotatable {
     private static final FieldComparator FIELD_COMPARATOR = new FieldComparator();
     private static final MethodComparator METHOD_COMPARATOR = new MethodComparator();
@@ -60,6 +61,7 @@ public class TestClass implements Annotatable {
         this.fieldsForAnnotations = makeDeeplyUnmodifiable(fieldsForAnnotations);
     }
 
+    //getSuperClasses方法说明了JUnit在运行时会运行子类和父类中的测试方法。
     protected void scanAnnotatedMembers(Map<Class<? extends Annotation>, List<FrameworkMethod>> methodsForAnnotations, Map<Class<? extends Annotation>, List<FrameworkField>> fieldsForAnnotations) {
         for (Class<?> eachClass : getSuperClasses(clazz)) {
             for (Method eachMethod : MethodSorter.getDeclaredMethods(eachClass)) {

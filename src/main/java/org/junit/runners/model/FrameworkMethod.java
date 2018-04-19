@@ -16,6 +16,9 @@ import org.junit.internal.runners.model.ReflectiveCallable;
  *
  * @since 4.5
  */
+/*
+对测试类中的方法的封装，提供了验证及获取方法信息等功能
+ */
 public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
     private final Method method;
 
@@ -51,6 +54,7 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
      * parameters {@code params}. {@link InvocationTargetException}s thrown are
      * unwrapped, and their causes rethrown.
      */
+    //这里对调用method时可能抛出的InvocationTargetException异常做了包装，当发生异常时将cause抛出而不是InvocationTargetException
     public Object invokeExplosively(final Object target, final Object... params)
             throws Throwable {
         return new ReflectiveCallable() {
@@ -141,6 +145,11 @@ public class FrameworkMethod extends FrameworkMember<FrameworkMethod> {
         new NoGenericTypeParametersValidator(method).validate(errors);
     }
 
+    //TestClass中调用handlePossibleBridgeMethod的地方是addToAnnotationLists，该方法传入的参数是当前的FrameworkMethod
+    //和已经保存在map中的List<FrameworkMethod>，而查看调用addToAnnotationLists方法的scanAnnotatedMembers方法的for循环
+    //可以发现测试类的遍历是从当前测试类开始，逐个循环父类，所以是子类的方法先进入map，然后是父类的，而bridge方法(bridge的定义查看
+    // 笔记：bridge方法)是在子类中才有的，所以如果测试类的整个继承结构中存在bridge方法，则bridge方法肯定比其对应的父类方法先进入map
+    //所以就有了下面的判断方式，而在发现bridge方法后返回otherMethod就如下面注释的那样
     @Override
     FrameworkMethod handlePossibleBridgeMethod(List<FrameworkMethod> methods) {
         for (int i = methods.size() - 1; i >=0; i--) {

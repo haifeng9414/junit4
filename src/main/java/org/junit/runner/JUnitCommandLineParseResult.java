@@ -118,7 +118,6 @@ class JUnitCommandLineParseResult {
         if (parserErrors.isEmpty()) {
             Request request = Request.classes(
                     computer, classes.toArray(new Class<?>[classes.size()]));
-            //暂时不考虑存在filter的情况，没有filter时这里相当于直接返回request
             return applyFilterSpecs(request);
         } else {
             return errorReport(new InitializationError(parserErrors));
@@ -126,8 +125,7 @@ class JUnitCommandLineParseResult {
     }
 
     //如果存在filter则返回包含当前的request和指定的filter的FilterRequest实例，filterWith方法每次调用都返回一个新的FilterRequest
-    //所以相当于即使指定了多个filter，也只有最后一个会生效，这一规则只对使用JUnitCommandLineParseResult生成的Request有效，是否有其他地方
-    //存在生成Request的方法还不确定
+    //所以相当于即使指定了多个filter，也只有最后一个会生效，同时这也是装饰器模式的应用，在FilterRequest在Request的基础上添加了过滤功能
     private Request applyFilterSpecs(Request request) {
         try {
             for (String filterSpec : filterSpecs) {

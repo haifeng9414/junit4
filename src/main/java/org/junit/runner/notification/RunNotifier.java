@@ -11,14 +11,17 @@ import org.junit.runner.Result;
 
 /**
  * If you write custom runners, you may need to notify JUnit of your progress running tests.
- * Do this by invoking the <code>RunNotifier</code> passed to your implementation of
+ * Do this by invoking the <codev>RunNotifier</code> passed to your implementation of
  * {@link org.junit.runner.Runner#run(RunNotifier)}. Future evolution of this class is likely to
  * move {@link #fireTestRunStarted(Description)} and {@link #fireTestRunFinished(Result)}
  * to a separate class since they should only be called once per run.
  *
  * @since 4.0
  */
-//RunNotifier维护了所有的监听器，类似观察者模式
+/*
+RunNotifier维护了所有的监听器，即观察者模式，由于可能会在多线程环境下执行，所以该类做了些确保多线程下能够安全执行的操作，如
+addListener中的wrapIfNotThreadSafe
+ */
 public class RunNotifier {
     private final List<RunListener> listeners = new CopyOnWriteArrayList<RunListener>();
     private volatile boolean pleaseStop = false;
@@ -52,7 +55,7 @@ public class RunNotifier {
                 listener : new SynchronizedRunListener(listener, this);
     }
 
-
+    //该类抽象了遍历listeners的过程，只要实现notifyListener即可通知所有的listeners
     private abstract class SafeNotifier {
         private final List<RunListener> currentListeners;
 

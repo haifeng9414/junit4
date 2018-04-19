@@ -18,6 +18,7 @@ import java.util.List;
  * @author kcooney@google.com (Kevin Cooney)
  * @since 4.12
  */
+//异常信息显示的工具类
 public final class Throwables {
 
     private Throwables() {

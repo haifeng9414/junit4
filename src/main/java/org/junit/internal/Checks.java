@@ -12,7 +12,7 @@ public final class Checks {
      * @return the passed-in value, if not {@code null}
      * @throws NullPointerException if {@code value} is {@code null}
      */
-    public static <T> T notNull(T value) {
+    public static <T> T  notNull(T value) {
         if (value == null) {
             throw new NullPointerException();
         }

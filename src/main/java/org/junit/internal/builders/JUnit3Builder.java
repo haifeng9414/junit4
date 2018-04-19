@@ -13,7 +13,7 @@ public class JUnit3Builder extends RunnerBuilder {
         return null;
     }
 
-    boolean isPre4Test(Class<?> testClass) {
+    boolean  isPre4Test(Class<?> testClass) {
         return junit.framework.TestCase.class.isAssignableFrom(testClass);
     }
 }

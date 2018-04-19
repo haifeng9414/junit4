@@ -118,6 +118,10 @@ public class FailOnTimeout extends Statement {
 
     @Override
     public void evaluate() throws Throwable {
+        //由于是计算方法运行的timeout的，为了尽可能的精确计算方法的执行时间，使用CallableStatement做为辅助类
+        //该类继承自Callable，在运行该类的线程开始运行时调用该类的awaitStarted()方法，即使用CountDownLatch.await()
+        //来等待方法的执行，CallableStatement的call方法中通过CountDownLatch.countDown通知方法开始执行，在方法开始后
+        //即会调用getResult方法开始计时。
         CallableStatement callable = new CallableStatement();
         FutureTask<Throwable> task = new FutureTask<Throwable>(callable);
         ThreadGroup threadGroup = new ThreadGroup("FailOnTimeoutGroup");

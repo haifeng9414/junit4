@@ -8,6 +8,13 @@ import java.util.List;
  *
  * @since 4.7
  */
+/*
+T要求是FrameworkMember类型的，所以这里写成T extends FrameworkMember<T>，同时还限定了extends FrameworkMember<T>
+表示T继承自FrameworkMember<T>，这样FrameworkMember的子类在实现时只能写成A extends<FrameworkMember<A>>的形式，并且子类中
+的T类型就被限定成A，如子类实现isShadowedBy方法时参数类型只能是A
+
+FrameworkMember用于指定封装测试类的属性和方法的类的接口
+ */
 public abstract class FrameworkMember<T extends FrameworkMember<T>> implements
         Annotatable {
     abstract boolean isShadowedBy(T otherMember);

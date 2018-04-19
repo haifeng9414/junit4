@@ -106,6 +106,7 @@ public abstract class Request {
      * @param runner the runner to return
      * @return a <code>Request</code> that will run the given runner when invoked
      */
+    //Request是一个抽象类，但是在该抽象类中的静态方法又能够返回Request的实现类，这样可以避免创建多余的类，直接用匿名类就行了。
     public static Request runner(final Runner runner) {
         return new Request() {
             @Override
